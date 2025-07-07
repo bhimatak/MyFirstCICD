@@ -1,21 +1,35 @@
-﻿# CMakeList.txt : CMake project for MyFirstCICD, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+cmake_minimum_required (VERSION 3.20)
 
 # Enable Hot Reload for MSVC compilers if supported.
-if (POLICY CMP0141)
-  cmake_policy(SET CMP0141 NEW)
-  set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
-endif()
 
-project ("MyFirstCICD")
+set(CMAKE_CXX_STANDARD 17)
 
-# Add source to this project's executable.
-add_executable (MyFirstCICD  "MyFirstCICD.h")
+project ("Project1")
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET MyFirstCICD PROPERTY CXX_STANDARD 20)
-endif()
+#include_path
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
-# TODO: Add tests and install targets if needed.
+#Add Library
+add_library(mylib src/utils.cpp)
+
+
+#Main Application
+add_executable(MyApp src/main.cpp src/utils.cpp)
+target_link_libraries(MyApp mylib)
+
+#test_Application
+#Unit test
+enable_testing()
+#add_executable(MyTests tests/test_add1.cpp)
+#target_link_libraries(MyTests mylib)
+#add_test(NAME RunMyTests COMMAND MyTests)
+macro(add_calc_test name)
+	add_executable(${name} tests/${name}.cpp)
+	target_link_libraries(${name} mylib)
+	add_test(NAME ${name} COMMAND ${name})
+endmacro()
+
+#Add test cases
+add_calc_test(test_add1)
+add_calc_test(test_add2)
+add_calc_test(test_add3)
