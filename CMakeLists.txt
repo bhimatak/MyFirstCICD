@@ -12,7 +12,7 @@ endif()
 project ("MyFirstCICD")
 
 # Add source to this project's executable.
-add_executable (MyFirstCICD "MyFirstCICD.cpp" "MyFirstCICD.h")
+add_executable (MyFirstCICD  "MyFirstCICD.h")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET MyFirstCICD PROPERTY CXX_STANDARD 20)
